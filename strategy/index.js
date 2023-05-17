@@ -1,3 +1,21 @@
+class SortingStrategy {
+  sortArray(array) {
+    return array;
+  }
+}
+
+class CreateFirstStrategy extends SortingStrategy {
+  sortArray(array) {
+    return array.sort();
+  }
+}
+
+class CreateSecondStrategy extends SortingStrategy {
+  sortArray(array) {
+    return array.reverse();
+  }
+}
+
 class Strategy {
   constructor(strategy) {
     this.strategy = strategy;
@@ -8,21 +26,9 @@ class Strategy {
   }
 
   doSomeLogic() {
-    const result = this.strategy.doAlgorithm(['a', 'c', 'd', 'b','e']);
+    const result = this.strategy.sortArray(['a', 'c', 'd', 'b','e']);
 
     console.log(result.join(','));
-  }
-}
-
-class CreateFirstStrategy extends Strategy {
-  doAlgorithm(array) {
-    return array.sort();
-  }
-}
-
-class CreateSecondStrategy extends Strategy {
-  doAlgorithm(array) {
-    return array.reverse();
   }
 }
 
