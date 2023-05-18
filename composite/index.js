@@ -1,60 +1,52 @@
-class Component {
-  constructor() {
-    this.elements = [];
-    this.traversed = [];
-  }
-}
-
-class Leaf extends Component {
-  constructor(value) {
-    super();
-    this.value = value;
-  }
-
-  getResult() {
-    return this.value;
-  }
-}
-
-class Composite extends Component {
-  constructor(value) {
-    super();
-    this.value = value;
+class TreeComposite {
+  constructor(name) {
+    this.name = name;
+    this.children = [];
   }
 
   add(element) {
-    this.elements.push(element);
+    this.children.push(element);
   }
 
-  getResult(result) {
-    this.elements.forEach(element => {
-      if (element instanceof Leaf) {
-        result.push("Branch " + this.value + ", Leaf with '" + element.getResult() + "'");
-      } else {
-        if (this.traversed.indexOf(this) < 0) {
-          result.push("Branch " + this.value);
-        }
+  remove(element) {
+    const index = this.children.indexOf(element);
 
-        this.traversed.push(this);
-        element.getResult(result);
-      }
-    });
+    if (index !== -1) {
+      this.children.splice(index, 1);
+    }
+  }
+
+  operation() {
+    console.log(`Composite ${this.name}`);
+
+    for (const child of this.children) {
+      child.operation();
+    }
   }
 }
 
-const result = [];
+class Leaf extends TreeComposite {
+  constructor(name) {
+    super(name);
+  }
 
-const Box_1 = new Composite("Box_1");
-const Box_2 = new Composite("Box_2");
-const Box_3 = new Composite("Box_3");
+  operation() {
+    console.log(`Leaf ${this.name}`);
+  }
+}
 
-const Item_1 = new Leaf("Item_1");
-const Item_2 = new Leaf("Item_2");
+const leafA = new Leaf("A");
+const leafB = new Leaf("B");
+const leafC = new Leaf("C");
+const leafD = new Leaf("D");
 
-Box_2.add(Item_2)
-Box_1.add(Box_2);
-Box_3.add(Item_1)
-Box_1.add(Box_3);
+const composite1 = new TreeComposite("1");
+const composite2 = new TreeComposite("2");
 
-Box_1.getResult(result);
-console.log(result);
+composite1.add(leafA);
+composite2.add(leafB);
+composite2.add(leafC);
+
+composite1.add(composite2);
+
+composite1.operation();
